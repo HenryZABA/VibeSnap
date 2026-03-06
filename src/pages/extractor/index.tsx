@@ -13,10 +13,28 @@ import { Sparkles, Heart } from "lucide-react";
 
 const ExtractorPage = () => {
   const { isAnalyzing, result, imageUrl, previewUrl, error, analyzeImage } = useDesignAnalysis();
-  const { addInspiration, count } = useInspirations();
+  const { addInspiration, removeInspiration, isImageFavorited, getInspirationByImage, count } = useInspirations();
   const [activeTab, setActiveTab] = useState("summary");
   const [autoSaved, setAutoSaved] = useState(false);
   const savedUrlRef = useRef<string | null>(null);
+
+  const isSaved = imageUrl ? isImageFavorited(imageUrl) : autoSaved;
+
+  const handleToggleSave = async () => {
+    if (!result || !imageUrl) return;
+    if (isSaved) {
+      const existing = getInspirationByImage(imageUrl);
+      if (existing) {
+        await removeInspiration.mutateAsync(existing.id);
+        setAutoSaved(false);
+        toast({ title: "Removed from library" });
+      }
+    } else {
+      await addInspiration.mutateAsync({ imageUrl, result, title: result.title || "" });
+      setAutoSaved(true);
+      toast({ title: "Saved to library" });
+    }
+  };
 
   const displayUrl = previewUrl || imageUrl;
 
@@ -62,27 +80,17 @@ const ExtractorPage = () => {
                 <h3 className="text-base font-semibold text-foreground">Original</h3>
                 {result && (
                   <button
-                    disabled={autoSaved}
-                    onClick={() => {
-                      if (!autoSaved && result && imageUrl) {
-                        addInspiration
-                          .mutateAsync({ imageUrl, result, title: result.title || "" })
-                          .then(() => {
-                            setAutoSaved(true);
-                            toast({ title: "Saved to library" });
-                          });
-                      }
-                    }}
+                    onClick={handleToggleSave}
                     className={`flex items-center gap-1.5 text-xs transition-colors cursor-pointer ${
-                      autoSaved
+                      isSaved
                         ? "text-vibe-purple"
                         : "text-muted-foreground hover:text-vibe-purple"
                     }`}
                   >
                     <Heart
-                      className={`w-4 h-4 transition-all ${autoSaved ? "fill-vibe-purple" : ""}`}
+                      className={`w-4 h-4 transition-all ${isSaved ? "fill-vibe-purple" : ""}`}
                     />
-                    <span>{autoSaved ? "Saved" : "Save"}</span>
+                    <span>{isSaved ? "Saved" : "Save"}</span>
                   </button>
                 )}
               </div>
