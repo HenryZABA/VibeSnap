@@ -31,15 +31,6 @@ const Header = ({ inspirationCount = 0 }: HeaderProps) => {
 
       <div className="flex items-center gap-2">
         <Button
-          variant={isExtractor ? "default" : "outline"}
-          size="sm"
-          onClick={() => navigate("/extractor")}
-          className={isExtractor ? "bg-vibe-dark text-card hover:bg-vibe-dark/90" : ""}
-        >
-          <QrCode className="w-4 h-4" />
-          <span className="hidden sm:inline">提取器</span>
-        </Button>
-        <Button
           variant={isModifier ? "default" : "outline"}
           size="sm"
           onClick={() => navigate("/modifier")}
@@ -47,6 +38,15 @@ const Header = ({ inspirationCount = 0 }: HeaderProps) => {
         >
           <Wand2 className="w-4 h-4" />
           <span className="hidden sm:inline">修改器</span>
+        </Button>
+        <Button
+          variant={isExtractor ? "default" : "outline"}
+          size="sm"
+          onClick={() => navigate("/extractor")}
+          className={isExtractor ? "bg-vibe-dark text-card hover:bg-vibe-dark/90" : ""}
+        >
+          <QrCode className="w-4 h-4" />
+          <span className="hidden sm:inline">提取器</span>
         </Button>
         <Button
           variant={isLibrary ? "default" : "outline"}
