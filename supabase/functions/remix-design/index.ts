@@ -33,21 +33,21 @@ serve(async (req) => {
 
 Please complete the following analysis tasks:
 1. From Image 1 (Source Website): Extract the website theme, business positioning, core feature modules, content structure, and target users
-2. From Image 2 (Reference Style): Extract UI visual style, color scheme, font style, design tokens like radius/shadow/spacing, layout patterns, and component styles
+2. From Image 2 (Reference Style): Extract UI visual style, color scheme, font style, design tokens like radius/shadow/spacing, layout patterns, component styles, and notably any background images, decorative illustrations, or visual assets used
 3. Combining both analyses, generate a complete "UI Modification Prompt" that guides AI to transform the source website to match the reference style
 
 Return strict JSON format (no markdown code blocks, output raw JSON), with the following fields:
 
 {
   "source_theme": "100-200 words describing what the source website does, target users, core features, and content structure",
-  "reference_style": "100-200 words describing the reference style's visual characteristics, such as color scheme, layout features, and design language",
-  "modification_prompt": "A 1000-2000 word complete modification prompt. This prompt should be directly usable by AI to transform the source website's UI to match the reference style. The prompt must include: [Content Preservation] Keep the source website's business theme, feature modules, and content structure unchanged. [Visual Style Transformation] Detailed description of the new visual style to apply, including: overall design language and atmosphere, color scheme (with specific HEX values), font suggestions, visual tokens like radius/shadow/border (with specific CSS values), spacing and layout adjustment suggestions, component style transformation (buttons, cards, navbar, forms, etc.), and animation/interaction suggestions. Use backticks to mark key CSS values and technical parameters."
+  "reference_style": "100-200 words describing the reference style's visual characteristics, such as color scheme, layout features, design language, and any notable use of background images or decorative visual assets",
+  "modification_prompt": "A 1000-2000 word complete modification prompt. This prompt should be directly usable by AI to transform the source website's UI to match the reference style. The prompt must include: [Content Preservation] Keep the source website's business theme, feature modules, and content structure unchanged. [Visual Style Transformation] Detailed description of the new visual style to apply, including: overall design language and atmosphere, color scheme (with specific HEX values), font suggestions, visual tokens like radius/shadow/border (with specific CSS values), spacing and layout adjustment suggestions, component style transformation (buttons, cards, navbar, forms, etc.), and animation/interaction suggestions. [Image & Visual Asset Generation] Analyze the reference style for any background images, hero banners, decorative illustrations, gradient overlays, or visual embellishments. For each visual asset needed to achieve the reference style, provide a detailed AI image generation prompt describing: the subject/content, visual style (photographic, illustrative, abstract, etc.), color palette and mood, dimensions and placement. If the reference uses full-bleed hero images, textured backgrounds, decorative patterns, or illustrative elements, specify clear image generation prompts so AI can create matching assets for the transformed design. Use backticks to mark key CSS values and technical parameters."
 }
 
 Notes:
 1. source_theme should accurately describe the source website's business essence
-2. reference_style should capture the core visual characteristics of the reference
-3. modification_prompt is the most important output - it must be detailed and practical enough for AI to directly transform the page
+2. reference_style should capture the core visual characteristics of the reference, including any use of images/illustrations
+3. modification_prompt is the most important output - it must be detailed and practical enough for AI to directly transform the page, including generating any necessary background images or decorative visual assets
 4. Return JSON directly, do not wrap in markdown code blocks
 5. All output must be in English`;
 

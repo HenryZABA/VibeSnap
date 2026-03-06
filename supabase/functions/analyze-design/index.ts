@@ -73,7 +73,7 @@ Return strict JSON format (no markdown code blocks, output raw JSON), with the f
   },
   "prompt": {
     "site_theme": "A 100-200 word description of the website's theme and purpose. What the website does, who the target users are, and what the core features are. For example: 'This is a trendy e-commerce platform targeting young consumers, featuring limited-edition sneakers and streetwear, with core features including product showcase, countdown timers, and user community.'",
-    "text": "A complete design prompt (800-1500 words) that can be directly used by AI to generate a page with the same style. The prompt must contain two parts: [Part 1: Site Theme & Purpose] Describe what the website does, which industry/scenario it serves, the target user group, and core feature modules. [Part 2: UI Design Style] Page type, overall visual style, color scheme (with specific HEX values), font suggestions, visual tokens like radius/shadow/spacing (with specific CSS values), layout structure, component styles, and animation suggestions. Combine both parts so AI can not only replicate the visual style but also understand the business positioning and content direction. Use backticks to mark key CSS values and technical parameters.",
+    "text": "A complete design prompt (800-1500 words) that can be directly used by AI to generate a page with the same style. The prompt must contain these parts: [Part 1: Site Theme & Purpose] Describe what the website does, which industry/scenario it serves, the target user group, and core feature modules. [Part 2: UI Design Style] Page type, overall visual style, color scheme (with specific HEX values), font suggestions, visual tokens like radius/shadow/spacing (with specific CSS values), layout structure, component styles, and animation suggestions. [Part 3: Image & Visual Asset Requirements] Carefully examine the screenshot for any background images, hero banners, decorative illustrations, product photos, icons, or other visual assets used in the design. For each image area identified, describe: its position and dimensions, the content/subject of the image, the visual style (photographic, illustrative, abstract, gradient, etc.), mood and color tone, and provide a detailed AI image generation prompt that can be used to recreate a similar image. If the page uses full-bleed background images, gradient overlays on photos, or decorative elements, specify those clearly so AI can generate appropriate replacement assets. Combine all parts so AI can not only replicate the visual style but also understand the business positioning, content direction, and generate all necessary visual assets. Use backticks to mark key CSS values and technical parameters.",
     "version": "v2"
   }
 }
@@ -84,8 +84,9 @@ Notes:
 3. Each color must have an accurate HEX value
 4. Tags should be 4-6 short design style tags
 5. prompt.text should be detailed enough for AI to generate a page with the same style
-6. Return JSON directly, do not wrap in markdown code blocks
-7. All output must be in English`;
+6. Pay special attention to any images in the design - background images, hero photos, decorative illustrations, etc. The prompt must include specific image generation descriptions for each visual asset
+7. Return JSON directly, do not wrap in markdown code blocks
+8. All output must be in English`;
 
     const response = await fetch("https://api.enter.pro/code/api/v1/ai/messages", {
       method: "POST",
