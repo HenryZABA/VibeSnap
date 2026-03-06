@@ -123,7 +123,7 @@ const ExtractorPage = () => {
                     <DesignSummary result={result} />
                   </TabsContent>
                   <TabsContent value="prompt" className="mt-4">
-                    <DesignPrompt promptText={result.prompt.text} />
+                    <DesignPrompt promptText={result.prompt.text} siteTheme={result.prompt.site_theme} />
                   </TabsContent>
                 </>
               )}

@@ -87,7 +87,7 @@ const InspirationDetail = ({ item, open, onClose }: InspirationDetailProps) => {
                 <DesignSummary result={item.extraction_result} />
               </TabsContent>
               <TabsContent value="prompt" className="mt-4 flex-1 overflow-auto">
-                <DesignPrompt promptText={item.extraction_result.prompt.text} />
+                <DesignPrompt promptText={item.extraction_result.prompt.text} siteTheme={item.extraction_result.prompt.site_theme} />
               </TabsContent>
             </Tabs>
           </div>

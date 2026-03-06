@@ -31,6 +31,7 @@ export interface DesignExtractionResult {
   };
   tokens: DesignTokens;
   prompt: {
+    site_theme?: string;
     text: string;
     version: string;
   };

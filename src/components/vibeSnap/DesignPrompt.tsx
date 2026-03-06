@@ -1,4 +1,4 @@
-import { Copy } from "lucide-react";
+import { Copy, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion } from "framer-motion";
@@ -7,11 +7,15 @@ import { toast } from "@/hooks/use-toast";
 
 interface DesignPromptProps {
   promptText: string;
+  siteTheme?: string;
 }
 
-const DesignPrompt = ({ promptText }: DesignPromptProps) => {
+const DesignPrompt = ({ promptText, siteTheme }: DesignPromptProps) => {
   const handleCopyPrompt = async () => {
-    const ok = await copyToClipboard(promptText);
+    const fullText = siteTheme
+      ? `【网站主题与定位】\n${siteTheme}\n\n【设计提示词】\n${promptText}`
+      : promptText;
+    const ok = await copyToClipboard(fullText);
     if (ok) {
       toast({ title: "提示词已复制" });
     }
@@ -56,8 +60,21 @@ const DesignPrompt = ({ promptText }: DesignPromptProps) => {
         </Button>
       </div>
       <ScrollArea className="h-[calc(100vh-230px)]">
-        <div className="rounded-xl bg-vibe-dark p-5 text-sm leading-relaxed text-card/90 whitespace-pre-wrap font-mono">
-          {renderPromptText(promptText)}
+        <div className="space-y-4 pr-4">
+          {siteTheme && (
+            <div className="rounded-xl bg-vibe-purple/10 border border-vibe-purple/20 p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <Globe className="w-4 h-4 text-vibe-purple" />
+                <span className="text-sm font-semibold text-vibe-purple">网站主题与定位</span>
+              </div>
+              <p className="text-sm leading-relaxed text-foreground/80">
+                {siteTheme}
+              </p>
+            </div>
+          )}
+          <div className="rounded-xl bg-vibe-dark p-5 text-sm leading-relaxed text-card/90 whitespace-pre-wrap font-mono">
+            {renderPromptText(promptText)}
+          </div>
         </div>
       </ScrollArea>
     </motion.div>
