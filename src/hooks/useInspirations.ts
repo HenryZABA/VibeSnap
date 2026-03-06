@@ -30,7 +30,7 @@ export function useInspirations() {
       const { error } = await supabase.from("inspirations").insert({
         image_url: imageUrl,
         extraction_result: result as unknown as Record<string, unknown>,
-        title: title || result.title || "未命名设计",
+        title: title || result.title || "Untitled Design",
       });
       if (error) throw error;
     },

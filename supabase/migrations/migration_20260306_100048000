@@ -1,0 +1,27 @@
+
+-- Create inspirations table
+CREATE TABLE IF NOT EXISTS inspirations (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  image_url text NOT NULL,
+  extraction_result jsonb NOT NULL DEFAULT '{}'::jsonb,
+  title text,
+  created_at timestamptz DEFAULT now()
+);
+
+-- Enable RLS
+ALTER TABLE inspirations ENABLE ROW LEVEL SECURITY;
+
+-- Allow anonymous read/write (no auth required for this app)
+CREATE POLICY "Allow all read" ON inspirations FOR SELECT USING (true);
+CREATE POLICY "Allow all insert" ON inspirations FOR INSERT WITH CHECK (true);
+CREATE POLICY "Allow all delete" ON inspirations FOR DELETE USING (true);
+
+-- Create storage bucket for uploads
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('uploads', 'uploads', true)
+ON CONFLICT (id) DO NOTHING;
+
+-- Storage policies
+CREATE POLICY "Allow public read on uploads" ON storage.objects FOR SELECT USING (bucket_id = 'uploads');
+CREATE POLICY "Allow public insert on uploads" ON storage.objects FOR INSERT WITH CHECK (bucket_id = 'uploads');
+CREATE POLICY "Allow public delete on uploads" ON storage.objects FOR DELETE USING (bucket_id = 'uploads');
