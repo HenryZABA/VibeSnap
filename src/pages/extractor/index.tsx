@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Header from "@/components/vibeSnap/Header";
@@ -16,7 +16,6 @@ const ExtractorPage = () => {
   const { addInspiration, removeInspiration, isImageFavorited, getInspirationByImage, count } = useInspirations();
   const [activeTab, setActiveTab] = useState("summary");
   const [autoSaved, setAutoSaved] = useState(false);
-  const savedUrlRef = useRef<string | null>(null);
 
   const isSaved = imageUrl ? isImageFavorited(imageUrl) : autoSaved;
 
@@ -38,26 +37,12 @@ const ExtractorPage = () => {
 
   const displayUrl = previewUrl || imageUrl;
 
-  // Auto-save to inspiration library when analysis completes
+  // Reset save state when a new image is analyzed
   useEffect(() => {
-    if (result && imageUrl && imageUrl !== savedUrlRef.current) {
-      savedUrlRef.current = imageUrl;
+    if (imageUrl) {
       setAutoSaved(false);
-      addInspiration
-        .mutateAsync({
-          imageUrl,
-          result,
-          title: result.title || "",
-        })
-        .then(() => {
-          setAutoSaved(true);
-          toast({ title: "Auto-saved to library" });
-        })
-        .catch((err) => {
-          console.error("Auto-save error:", err);
-        });
     }
-  }, [result, imageUrl, addInspiration]);
+  }, [imageUrl]);
 
   return (
     <div className="min-h-screen bg-background">
