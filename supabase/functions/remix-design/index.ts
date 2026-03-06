@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const AI_API_TOKEN = Deno.env.get("AI_API_TOKEN_c747b5206c1c");
+    const AI_API_TOKEN = Deno.env.get("AI_API_TOKEN_d2810d84bb25");
     if (!AI_API_TOKEN) {
       throw new Error("AI_API_TOKEN is not configured");
     }
