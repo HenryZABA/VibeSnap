@@ -1,36 +1,21 @@
 import { motion } from "framer-motion";
-import { Trash2, Check } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Trash2 } from "lucide-react";
 import type { InspirationItem } from "@/types/vibeSnap";
 
 interface InspirationCardProps {
   item: InspirationItem;
   onRemove: (id: string) => void;
   onClick: (item: InspirationItem) => void;
-  selectable?: boolean;
-  selected?: boolean;
-  onSelect?: (id: string) => void;
 }
 
 const InspirationCard = ({
   item,
   onRemove,
   onClick,
-  selectable = false,
-  selected = false,
-  onSelect,
 }: InspirationCardProps) => {
   const tags = item.extraction_result?.summary?.tags ?? [];
   const date = new Date(item.created_at).toLocaleDateString("zh-CN");
   const title = item.title || item.extraction_result?.title || "未命名设计";
-
-  const handleClick = () => {
-    if (selectable && onSelect) {
-      onSelect(item.id);
-    } else {
-      onClick(item);
-    }
-  };
 
   return (
     <motion.div
@@ -40,10 +25,8 @@ const InspirationCard = ({
       exit={{ opacity: 0, scale: 0.95 }}
       whileHover={{ y: -4, boxShadow: "0 12px 30px -8px rgba(0,0,0,0.12)" }}
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      className={`group rounded-xl border bg-card overflow-hidden cursor-pointer transition-colors ${
-        selected ? "border-vibe-purple ring-2 ring-vibe-purple/20" : "border-border"
-      }`}
-      onClick={handleClick}
+      className="group rounded-xl border border-border bg-card overflow-hidden cursor-pointer"
+      onClick={() => onClick(item)}
     >
       <div className="relative aspect-video overflow-hidden bg-muted">
         <img
@@ -54,21 +37,6 @@ const InspirationCard = ({
             (e.target as HTMLImageElement).style.display = "none";
           }}
         />
-        {selectable && (
-          <div
-            className={`absolute top-2 left-2 w-6 h-6 rounded-md flex items-center justify-center transition-all ${
-              selected
-                ? "bg-vibe-purple text-white"
-                : "bg-card/80 backdrop-blur-sm border border-border"
-            }`}
-            onClick={(e) => {
-              e.stopPropagation();
-              onSelect?.(item.id);
-            }}
-          >
-            {selected && <Check className="w-3.5 h-3.5" />}
-          </div>
-        )}
         <button
           onClick={(e) => {
             e.stopPropagation();

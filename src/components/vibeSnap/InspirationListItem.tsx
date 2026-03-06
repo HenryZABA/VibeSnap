@@ -1,36 +1,22 @@
 import { motion } from "framer-motion";
-import { Trash2, Check } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import type { InspirationItem } from "@/types/vibeSnap";
 
 interface InspirationListItemProps {
   item: InspirationItem;
   onRemove: (id: string) => void;
   onClick: (item: InspirationItem) => void;
-  selectable?: boolean;
-  selected?: boolean;
-  onSelect?: (id: string) => void;
 }
 
 const InspirationListItem = ({
   item,
   onRemove,
   onClick,
-  selectable = false,
-  selected = false,
-  onSelect,
 }: InspirationListItemProps) => {
   const tags = item.extraction_result?.summary?.tags ?? [];
   const date = new Date(item.created_at).toLocaleDateString("zh-CN");
   const title = item.title || item.extraction_result?.title || "未命名设计";
   const styleText = item.extraction_result?.summary?.style_text || "";
-
-  const handleClick = () => {
-    if (selectable && onSelect) {
-      onSelect(item.id);
-    } else {
-      onClick(item);
-    }
-  };
 
   return (
     <motion.div
@@ -40,28 +26,9 @@ const InspirationListItem = ({
       exit={{ opacity: 0, x: -8 }}
       whileHover={{ backgroundColor: "hsl(var(--muted) / 0.5)" }}
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      className={`group flex items-center gap-4 rounded-xl border bg-card p-3 cursor-pointer transition-colors ${
-        selected ? "border-vibe-purple ring-2 ring-vibe-purple/20" : "border-border"
-      }`}
-      onClick={handleClick}
+      className="group flex items-center gap-4 rounded-xl border border-border bg-card p-3 cursor-pointer"
+      onClick={() => onClick(item)}
     >
-      {/* Selection checkbox */}
-      {selectable && (
-        <div
-          className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 transition-all ${
-            selected
-              ? "bg-vibe-purple text-white"
-              : "border border-border bg-card"
-          }`}
-          onClick={(e) => {
-            e.stopPropagation();
-            onSelect?.(item.id);
-          }}
-        >
-          {selected && <Check className="w-3 h-3" />}
-        </div>
-      )}
-
       {/* Thumbnail */}
       <div className="w-20 h-14 rounded-lg overflow-hidden bg-muted shrink-0">
         <img
