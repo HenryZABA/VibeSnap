@@ -2,6 +2,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ExtractorPage from "./pages/extractor";
 import InspirationLibrary from "./pages/library";
+import ModifierPage from "./pages/modifier";
 
 export const routers = [
     {
@@ -13,6 +14,11 @@ export const routers = [
       path: "/extractor",
       name: 'extractor',
       element: <ExtractorPage />,
+    },
+    {
+      path: "/modifier",
+      name: 'modifier',
+      element: <ModifierPage />,
     },
     {
       path: "/library",
