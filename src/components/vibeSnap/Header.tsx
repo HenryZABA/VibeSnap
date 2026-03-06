@@ -24,7 +24,7 @@ const Header = ({ inspirationCount = 0 }: HeaderProps) => {
           </svg>
         </div>
         <span className="text-lg font-bold text-foreground tracking-tight">
-          VibeSnap
+          VibeSnap Pro
         </span>
       </div>
 
