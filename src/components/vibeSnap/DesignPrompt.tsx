@@ -13,11 +13,11 @@ interface DesignPromptProps {
 const DesignPrompt = ({ promptText, siteTheme }: DesignPromptProps) => {
   const handleCopyPrompt = async () => {
     const fullText = siteTheme
-      ? `【网站主题与定位】\n${siteTheme}\n\n【设计提示词】\n${promptText}`
+      ? `[Site Theme & Purpose]\n${siteTheme}\n\n[Design Prompt]\n${promptText}`
       : promptText;
     const ok = await copyToClipboard(fullText);
     if (ok) {
-      toast({ title: "提示词已复制" });
+      toast({ title: "Prompt copied" });
     }
   };
 
@@ -46,7 +46,7 @@ const DesignPrompt = ({ promptText, siteTheme }: DesignPromptProps) => {
       className="space-y-4"
     >
       <div className="flex items-center justify-between relative z-10">
-        <h4 className="text-base font-semibold text-foreground">设计提示词</h4>
+        <h4 className="text-base font-semibold text-foreground">Design Prompt</h4>
         <Button
           size="sm"
           onClick={(e) => {
@@ -56,7 +56,7 @@ const DesignPrompt = ({ promptText, siteTheme }: DesignPromptProps) => {
           className="bg-vibe-purple hover:bg-vibe-purple/90 text-card gap-1.5 text-xs cursor-pointer"
         >
           <Copy className="w-3.5 h-3.5" />
-          复制提示词
+          Copy Prompt
         </Button>
       </div>
       <ScrollArea className="h-[calc(100vh-230px)]">
@@ -65,7 +65,7 @@ const DesignPrompt = ({ promptText, siteTheme }: DesignPromptProps) => {
             <div className="rounded-xl bg-vibe-purple/10 border border-vibe-purple/20 p-5">
               <div className="flex items-center gap-2 mb-3">
                 <Globe className="w-4 h-4 text-vibe-purple" />
-                <span className="text-sm font-semibold text-vibe-purple">网站主题与定位</span>
+                <span className="text-sm font-semibold text-vibe-purple">Site Theme & Purpose</span>
               </div>
               <p className="text-sm leading-relaxed text-foreground/80">
                 {siteTheme}

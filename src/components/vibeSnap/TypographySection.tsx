@@ -12,7 +12,7 @@ const TypographySection = ({ fonts }: TypographySectionProps) => {
   const handleCopyFont = async (font: FontEntry) => {
     const ok = await copyToClipboard(font.css);
     if (ok) {
-      toast({ title: `已复制 ${font.name}` });
+      toast({ title: `Copied ${font.name}` });
     }
   };
 
@@ -23,7 +23,7 @@ const TypographySection = ({ fonts }: TypographySectionProps) => {
       transition={{ delay: 0.15 }}
       className="space-y-3"
     >
-      <h4 className="text-base font-semibold text-foreground">字体排版</h4>
+      <h4 className="text-base font-semibold text-foreground">Typography</h4>
       <div className="flex flex-wrap gap-3">
         {fonts.map((font) => (
           <button

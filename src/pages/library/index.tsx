@@ -22,7 +22,7 @@ const InspirationLibrary = () => {
 
   const handleRemove = async (id: string) => {
     await removeInspiration.mutateAsync(id);
-    toast({ title: "已从灵感库移除" });
+    toast({ title: "Removed from library" });
   };
 
   const hasItems = !isLoading && inspirations.length > 0;
@@ -36,7 +36,7 @@ const InspirationLibrary = () => {
           <div className="flex items-center justify-between gap-3 mb-5">
             <div className="flex items-center gap-3">
               <h2 className="text-lg font-semibold text-foreground">
-                {inspirations.length} 个灵感
+                {inspirations.length} Inspirations
               </h2>
               {/* View mode toggle */}
               <div className="flex items-center rounded-lg border border-border bg-muted p-0.5">
@@ -80,9 +80,9 @@ const InspirationLibrary = () => {
             <div className="w-20 h-20 rounded-2xl bg-muted flex items-center justify-center mb-5">
               <Bookmark className="w-9 h-9 text-muted-foreground" />
             </div>
-            <h3 className="text-lg font-semibold text-foreground mb-1">灵感库为空</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-1">Library is empty</h3>
             <p className="text-sm text-muted-foreground max-w-xs">
-              在提取器中上传截图，分析完成后自动保存到灵感库
+              Upload a screenshot in the Extractor to auto-save results here
             </p>
           </motion.div>
         )}

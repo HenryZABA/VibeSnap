@@ -15,7 +15,7 @@ const StyleSummary = ({ result }: StyleSummaryProps) => {
     const json = JSON.stringify(result, null, 2);
     const ok = await copyToClipboard(json);
     if (ok) {
-      toast({ title: "已复制 JSON" });
+      toast({ title: "JSON copied" });
     }
   };
 
@@ -27,10 +27,10 @@ const StyleSummary = ({ result }: StyleSummaryProps) => {
       className="rounded-xl border border-border bg-card p-5 space-y-4"
     >
       <div className="flex items-start justify-between gap-3">
-        <h4 className="text-base font-semibold text-foreground">设计风格</h4>
+        <h4 className="text-base font-semibold text-foreground">Design Style</h4>
         <Button variant="outline" size="sm" onClick={handleCopyJson} className="shrink-0 text-xs gap-1.5">
           <Copy className="w-3.5 h-3.5" />
-          复制 JSON
+          Copy JSON
         </Button>
       </div>
       <p className="text-sm text-muted-foreground leading-relaxed">

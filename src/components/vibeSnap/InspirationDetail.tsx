@@ -24,7 +24,7 @@ const InspirationDetail = ({ item, open, onClose }: InspirationDetailProps) => {
 
   if (!item) return null;
 
-  const title = item.title || item.extraction_result?.title || "未命名设计";
+  const title = item.title || item.extraction_result?.title || "Untitled Design";
 
   const handleCopyPromptJson = async () => {
     const json = JSON.stringify(
@@ -34,7 +34,7 @@ const InspirationDetail = ({ item, open, onClose }: InspirationDetailProps) => {
     );
     const ok = await copyToClipboard(json);
     if (ok) {
-      toast({ title: "Prompt JSON 已复制" });
+      toast({ title: "Prompt JSON copied" });
     }
   };
 
@@ -63,7 +63,7 @@ const InspirationDetail = ({ item, open, onClose }: InspirationDetailProps) => {
                 className="text-xs gap-1.5 shrink-0"
               >
                 <Copy className="w-3.5 h-3.5" />
-                复制 JSON
+                Copy JSON
               </Button>
             </div>
 
@@ -73,13 +73,13 @@ const InspirationDetail = ({ item, open, onClose }: InspirationDetailProps) => {
                   value="summary"
                   className="rounded-md text-sm font-medium data-[state=active]:bg-card data-[state=active]:shadow-sm"
                 >
-                  设计总结
+                  Design Summary
                 </TabsTrigger>
                 <TabsTrigger
                   value="prompt"
                   className="rounded-md text-sm font-medium data-[state=active]:bg-card data-[state=active]:shadow-sm"
                 >
-                  设计提示词
+                  Design Prompt
                 </TabsTrigger>
               </TabsList>
 

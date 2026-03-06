@@ -14,8 +14,8 @@ const InspirationListItem = ({
   onClick,
 }: InspirationListItemProps) => {
   const tags = item.extraction_result?.summary?.tags ?? [];
-  const date = new Date(item.created_at).toLocaleDateString("zh-CN");
-  const title = item.title || item.extraction_result?.title || "未命名设计";
+  const date = new Date(item.created_at).toLocaleDateString("en-US");
+  const title = item.title || item.extraction_result?.title || "Untitled Design";
   const styleText = item.extraction_result?.summary?.style_text || "";
 
   return (

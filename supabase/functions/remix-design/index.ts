@@ -26,29 +26,30 @@ serve(async (req) => {
       );
     }
 
-    const systemPrompt = `你是一个专业的 UI/UX 设计改造专家。用户会提供两张图片：
+    const systemPrompt = `You are a professional UI/UX design transformation expert. The user will provide two images:
 
-**图片1（源网页）**：用户当前的网页截图
-**图片2（参考风格）**：用户想要参考的风格/设计截图
+**Image 1 (Source Website)**: The user's current website screenshot
+**Image 2 (Reference Style)**: The style/design screenshot the user wants to reference
 
-请你完成以下分析任务：
-1. 从图片1（源网页）中提取：网站主题、业务定位、核心功能模块、内容结构、目标用户
-2. 从图片2（参考风格）中提取：UI 视觉风格、配色方案、字体风格、圆角/阴影/间距等设计 token、布局模式、组件风格
-3. 综合以上两点，生成一段完整的「UI 修改提示词」，指导 AI 将源网页改造为参考风格
+Please complete the following analysis tasks:
+1. From Image 1 (Source Website): Extract the website theme, business positioning, core feature modules, content structure, and target users
+2. From Image 2 (Reference Style): Extract UI visual style, color scheme, font style, design tokens like radius/shadow/spacing, layout patterns, and component styles
+3. Combining both analyses, generate a complete "UI Modification Prompt" that guides AI to transform the source website to match the reference style
 
-请返回严格的 JSON 格式（不要使用 markdown 代码块包裹，直接输出纯 JSON），包含以下字段：
+Return strict JSON format (no markdown code blocks, output raw JSON), with the following fields:
 
 {
-  "source_theme": "100-200字，描述源网页是做什么的、目标用户、核心功能、内容结构等",
-  "reference_style": "100-200字，描述参考风格图的视觉风格特点，如配色风格、布局特征、设计语言等",
-  "modification_prompt": "1000-2000字的完整修改提示词。这段提示词应该可以直接交给 AI，让它将源网页的 UI 改造为参考风格。提示词必须包含以下内容：【网站定位与内容保持】保留源网页的业务主题、功能模块和内容结构不变。【视觉风格改造】详细描述要应用的新视觉风格，包括：整体设计语言和氛围、配色方案（含具体HEX值）、字体建议、圆角阴影边框等视觉 token（含具体CSS值）、间距和布局调整建议、组件样式改造（按钮、卡片、导航栏、表单等）、动画和交互建议。用反引号标注关键CSS值和技术参数。"
+  "source_theme": "100-200 words describing what the source website does, target users, core features, and content structure",
+  "reference_style": "100-200 words describing the reference style's visual characteristics, such as color scheme, layout features, and design language",
+  "modification_prompt": "A 1000-2000 word complete modification prompt. This prompt should be directly usable by AI to transform the source website's UI to match the reference style. The prompt must include: [Content Preservation] Keep the source website's business theme, feature modules, and content structure unchanged. [Visual Style Transformation] Detailed description of the new visual style to apply, including: overall design language and atmosphere, color scheme (with specific HEX values), font suggestions, visual tokens like radius/shadow/border (with specific CSS values), spacing and layout adjustment suggestions, component style transformation (buttons, cards, navbar, forms, etc.), and animation/interaction suggestions. Use backticks to mark key CSS values and technical parameters."
 }
 
-注意：
-1. source_theme 要准确描述源网站的业务本质，不要偏离
-2. reference_style 要抓住参考风格的核心视觉特征
-3. modification_prompt 是最重要的输出，要足够详细和实用，让 AI 能直接据此改造页面
-4. 直接返回 JSON，不要包裹在 markdown 代码块中`;
+Notes:
+1. source_theme should accurately describe the source website's business essence
+2. reference_style should capture the core visual characteristics of the reference
+3. modification_prompt is the most important output - it must be detailed and practical enough for AI to directly transform the page
+4. Return JSON directly, do not wrap in markdown code blocks
+5. All output must be in English`;
 
     const response = await fetch("https://api.enter.pro/code/api/v1/ai/messages", {
       method: "POST",

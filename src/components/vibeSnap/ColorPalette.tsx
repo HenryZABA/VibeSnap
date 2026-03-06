@@ -11,7 +11,7 @@ const ColorPalette = ({ palette }: ColorPaletteProps) => {
   const handleCopyHex = async (hex: string) => {
     const ok = await copyToClipboard(hex);
     if (ok) {
-      toast({ title: `已复制 ${hex}` });
+      toast({ title: `Copied ${hex}` });
     }
   };
 
@@ -23,9 +23,9 @@ const ColorPalette = ({ palette }: ColorPaletteProps) => {
       className="space-y-3"
     >
       <div className="flex items-baseline gap-3">
-        <h4 className="text-base font-semibold text-foreground">核心色板</h4>
+        <h4 className="text-base font-semibold text-foreground">Color Palette</h4>
         <span className="text-xs text-vibe-purple cursor-pointer hover:underline">
-          点击卡片复制 HEX
+          Click card to copy HEX
         </span>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">

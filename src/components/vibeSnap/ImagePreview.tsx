@@ -12,7 +12,7 @@ const ImagePreview = ({ imageUrl }: ImagePreviewProps) => {
       transition={{ type: "spring", stiffness: 250, damping: 25 }}
       className="space-y-3"
     >
-      <h3 className="text-base font-semibold text-foreground">原图</h3>
+      <h3 className="text-base font-semibold text-foreground">Original</h3>
       <div className="rounded-xl overflow-hidden border border-border bg-muted/30">
         <img
           src={imageUrl}

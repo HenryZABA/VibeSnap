@@ -83,7 +83,7 @@ const UploadSlot = ({ title, description, icon, previewUrl, onSelect, accentClas
           />
           <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors flex items-center justify-center">
             <span className="text-xs font-medium text-card bg-foreground/60 px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-              点击更换
+              Click to replace
             </span>
           </div>
         </motion.div>
@@ -159,17 +159,17 @@ interface RemixResultViewProps {
 const RemixResultView = ({ sourceTheme, referenceStyle, modificationPrompt }: RemixResultViewProps) => {
   const handleCopy = async () => {
     const parts = [
-      "【源网站主题】",
+      "[Source Theme]",
       sourceTheme,
       "",
-      "【参考风格】",
+      "[Reference Style]",
       referenceStyle,
       "",
-      "【UI 修改提示词】",
+      "[UI Modification Prompt]",
       modificationPrompt,
     ];
     const ok = await copyToClipboard(parts.join("\n"));
-    if (ok) toast({ title: "修改提示词已复制" });
+    if (ok) toast({ title: "Modification prompt copied" });
   };
 
   const renderPromptText = (text: string) => {
@@ -196,14 +196,14 @@ const RemixResultView = ({ sourceTheme, referenceStyle, modificationPrompt }: Re
         <div className="rounded-xl bg-vibe-purple/10 border border-vibe-purple/20 p-4">
           <div className="flex items-center gap-2 mb-2">
             <Globe className="w-4 h-4 text-vibe-purple" />
-            <span className="text-sm font-semibold text-vibe-purple">源网站主题</span>
+            <span className="text-sm font-semibold text-vibe-purple">Source Theme</span>
           </div>
           <p className="text-sm leading-relaxed text-foreground/80">{sourceTheme}</p>
         </div>
         <div className="rounded-xl bg-accent/50 border border-accent p-4">
           <div className="flex items-center gap-2 mb-2">
             <Paintbrush className="w-4 h-4 text-vibe-dark" />
-            <span className="text-sm font-semibold text-vibe-dark">参考风格</span>
+            <span className="text-sm font-semibold text-vibe-dark">Reference Style</span>
           </div>
           <p className="text-sm leading-relaxed text-foreground/80">{referenceStyle}</p>
         </div>
@@ -212,14 +212,14 @@ const RemixResultView = ({ sourceTheme, referenceStyle, modificationPrompt }: Re
       {/* Modification prompt */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h4 className="text-base font-semibold text-foreground">UI 修改提示词</h4>
+          <h4 className="text-base font-semibold text-foreground">UI Modification Prompt</h4>
           <Button
             size="sm"
             onClick={handleCopy}
             className="bg-vibe-purple hover:bg-vibe-purple/90 text-card gap-1.5 text-xs cursor-pointer"
           >
             <Copy className="w-3.5 h-3.5" />
-            复制提示词
+            Copy Prompt
           </Button>
         </div>
         <ScrollArea className="h-[calc(100vh-420px)]">
@@ -251,8 +251,8 @@ const ModifierPage = () => {
         >
           <div className="rounded-xl border border-border bg-card p-5">
             <UploadSlot
-              title="你的网页"
-              description="上传你的网页截图"
+              title="Your Website"
+              description="Upload your website screenshot"
               icon={<Monitor className="w-4 h-4 text-foreground" />}
               previewUrl={source.previewUrl}
               onSelect={setSource}
@@ -267,8 +267,8 @@ const ModifierPage = () => {
 
           <div className="rounded-xl border border-border bg-card p-5">
             <UploadSlot
-              title="参考风格"
-              description="上传想要参考的风格图"
+              title="Reference Style"
+              description="Upload a style reference image"
               icon={<Palette className="w-4 h-4 text-foreground" />}
               previewUrl={reference.previewUrl}
               onSelect={setReference}
@@ -282,7 +282,7 @@ const ModifierPage = () => {
             className="w-full bg-vibe-purple hover:bg-vibe-purple/90 text-card gap-2 text-sm font-semibold cursor-pointer disabled:opacity-50"
           >
             <Wand2 className="w-4 h-4" />
-            {isAnalyzing ? "分析中..." : "开始风格融合"}
+            {isAnalyzing ? "Analyzing..." : "Start Style Remix"}
           </Button>
         </motion.div>
 
@@ -300,7 +300,7 @@ const ModifierPage = () => {
                   <Wand2 className="w-7 h-7 text-muted-foreground" />
                 </div>
                 <p className="text-sm text-muted-foreground max-w-xs">
-                  上传你的网页截图和参考风格图，AI 将生成风格修改提示词
+                  Upload your website screenshot and a style reference, AI will generate a UI modification prompt
                 </p>
               </div>
             )}

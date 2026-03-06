@@ -52,7 +52,7 @@ const ImageUploader = ({ onImageSelect }: ImageUploaderProps) => {
 
   return (
     <div className="space-y-3">
-      <h3 className="text-base font-semibold text-foreground">输入设计</h3>
+      <h3 className="text-base font-semibold text-foreground">Upload Design</h3>
       <motion.div
         whileHover={{ scale: 1.01 }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
@@ -74,10 +74,10 @@ const ImageUploader = ({ onImageSelect }: ImageUploaderProps) => {
             <Upload className="w-5 h-5 text-muted-foreground" />
           </div>
           <p className="text-sm font-medium text-foreground">
-            点击、拖拽或粘贴图片
+            Click, drag or paste an image
           </p>
           <p className="text-xs text-muted-foreground mt-1">
-            支持 PNG, JPG, WEBP 格式
+            Supports PNG, JPG, WEBP
           </p>
         </div>
         <input

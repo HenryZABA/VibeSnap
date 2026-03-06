@@ -34,7 +34,7 @@ const ExtractorPage = () => {
         })
         .then(() => {
           setAutoSaved(true);
-          toast({ title: "已自动加入灵感库" });
+          toast({ title: "Auto-saved to library" });
         })
         .catch((err) => {
           console.error("Auto-save error:", err);
@@ -63,7 +63,7 @@ const ExtractorPage = () => {
               {autoSaved && (
                 <div className="mt-3 flex items-center gap-1.5 text-xs text-vibe-purple">
                   <Check className="w-3.5 h-3.5" />
-                  <span>已自动保存到灵感库</span>
+                  <span>Auto-saved to library</span>
                 </div>
               )}
             </div>
@@ -84,13 +84,13 @@ const ExtractorPage = () => {
                   value="summary"
                   className="rounded-md text-sm font-medium data-[state=active]:bg-card data-[state=active]:shadow-sm"
                 >
-                  设计总结
+                  Design Summary
                 </TabsTrigger>
                 <TabsTrigger
                   value="prompt"
                   className="rounded-md text-sm font-medium data-[state=active]:bg-card data-[state=active]:shadow-sm"
                 >
-                  设计提示词
+                  Design Prompt
                 </TabsTrigger>
               </TabsList>
 
@@ -100,7 +100,7 @@ const ExtractorPage = () => {
                     <Sparkles className="w-7 h-7 text-muted-foreground" />
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    上传一张网页截图，AI 将自动分析其设计 DNA
+                    Upload a screenshot and AI will analyze its design DNA
                   </p>
                 </div>
               )}
