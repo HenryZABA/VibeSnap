@@ -1,29 +1,17 @@
-import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import ExtractorPage from "./pages/extractor";
-import InspirationLibrary from "./pages/library";
-import ModifierPage from "./pages/modifier";
+import AppLayout from "./components/vibeSnap/AppLayout";
 
 export const routers = [
     {
       path: "/",
-      name: 'home',
-      element: <Index />,
-    },
-    {
-      path: "/extractor",
-      name: 'extractor',
-      element: <ExtractorPage />,
-    },
-    {
-      path: "/modifier",
-      name: 'modifier',
-      element: <ModifierPage />,
-    },
-    {
-      path: "/library",
-      name: 'library',
-      element: <InspirationLibrary />,
+      name: 'root',
+      element: <AppLayout />,
+      children: [
+        { path: "", name: 'home' },
+        { path: "modifier", name: 'modifier' },
+        { path: "extractor", name: 'extractor' },
+        { path: "library", name: 'library' },
+      ],
     },
     /* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */
     {
