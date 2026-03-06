@@ -3,14 +3,13 @@ import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Header from "@/components/vibeSnap/Header";
 import ImageUploader from "@/components/vibeSnap/ImageUploader";
-import ImagePreview from "@/components/vibeSnap/ImagePreview";
 import DesignSummary from "@/components/vibeSnap/DesignSummary";
 import DesignPrompt from "@/components/vibeSnap/DesignPrompt";
 import AnalysisLoading from "@/components/vibeSnap/AnalysisLoading";
 import { useDesignAnalysis } from "@/hooks/useDesignAnalysis";
 import { useInspirations } from "@/hooks/useInspirations";
 import { toast } from "@/hooks/use-toast";
-import { Sparkles, Check } from "lucide-react";
+import { Sparkles, Heart } from "lucide-react";
 
 const ExtractorPage = () => {
   const { isAnalyzing, result, imageUrl, previewUrl, error, analyzeImage } = useDesignAnalysis();
@@ -59,13 +58,41 @@ const ExtractorPage = () => {
 
           {displayUrl && (
             <div className="rounded-xl border border-border bg-card p-5">
-              <ImagePreview imageUrl={displayUrl} />
-              {autoSaved && (
-                <div className="mt-3 flex items-center gap-1.5 text-xs text-vibe-purple">
-                  <Check className="w-3.5 h-3.5" />
-                  <span>Auto-saved to library</span>
-                </div>
-              )}
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-base font-semibold text-foreground">Original</h3>
+                {result && (
+                  <button
+                    disabled={autoSaved}
+                    onClick={() => {
+                      if (!autoSaved && result && imageUrl) {
+                        addInspiration
+                          .mutateAsync({ imageUrl, result, title: result.title || "" })
+                          .then(() => {
+                            setAutoSaved(true);
+                            toast({ title: "Saved to library" });
+                          });
+                      }
+                    }}
+                    className={`flex items-center gap-1.5 text-xs transition-colors cursor-pointer ${
+                      autoSaved
+                        ? "text-vibe-purple"
+                        : "text-muted-foreground hover:text-vibe-purple"
+                    }`}
+                  >
+                    <Heart
+                      className={`w-4 h-4 transition-all ${autoSaved ? "fill-vibe-purple" : ""}`}
+                    />
+                    <span>{autoSaved ? "Saved" : "Save"}</span>
+                  </button>
+                )}
+              </div>
+              <div className="rounded-xl overflow-hidden border border-border bg-muted/30">
+                <img
+                  src={displayUrl}
+                  alt="Uploaded design"
+                  className="w-full h-auto max-h-[500px] object-contain"
+                />
+              </div>
             </div>
           )}
         </motion.div>
