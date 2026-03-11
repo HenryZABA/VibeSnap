@@ -48,8 +48,8 @@ export function useDesignRemix() {
     try {
       // Compress both images in parallel
       const [sourceBase64, referenceBase64] = await Promise.all([
-        compressImageToBase64(source.file, 1600, 1600, 0.75),
-        compressImageToBase64(reference.file, 1600, 1600, 0.75),
+        compressImageToBase64(source.file, 1024, 1024, 0.6),
+        compressImageToBase64(reference.file, 1024, 1024, 0.6),
       ]);
 
       if (abortRef.current) return;
@@ -67,7 +67,7 @@ export function useDesignRemix() {
       setResult(data as RemixResult);
     } catch (err: unknown) {
       if (!abortRef.current) {
-        const message = err instanceof Error ? err.message : "分析失败，请重试";
+        const message = err instanceof Error ? err.message : "Analysis failed, please try again";
         setError(message);
       }
     } finally {
