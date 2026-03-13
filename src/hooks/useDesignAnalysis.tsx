@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useCallback, useRef, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { fileToBase64, compressImageToBase64 } from "@/lib/utils";
+import { compressImageToBase64 } from "@/lib/utils";
+import { invokeEdgeFunction } from "@/lib/edgeFunction";
 import type { DesignExtractionResult } from "@/types/vibeSnap";
 
 interface DesignAnalysisState {
@@ -39,7 +40,7 @@ export function DesignAnalysisProvider({ children }: { children: ReactNode }) {
       const fileName = `${Date.now()}-${file.name}`;
       const [uploadResult, compressedBase64] = await Promise.all([
         supabase.storage.from("uploads").upload(fileName, file),
-        compressImageToBase64(file, 1600, 1600, 0.75),
+        compressImageToBase64(file, 1024, 1024, 0.6),
       ]);
 
       if (abortRef.current) return;
@@ -56,20 +57,18 @@ export function DesignAnalysisProvider({ children }: { children: ReactNode }) {
         setImageUrl(`data:image/jpeg;base64,${compressedBase64}`);
       }
 
-      // Call AI analysis with compressed image
-      const { data, error: fnError } = await supabase.functions.invoke(
+      // Call AI analysis with compressed image via direct fetch
+      const data = await invokeEdgeFunction<DesignExtractionResult>(
         "analyze-design",
-        { body: { image_base64: compressedBase64 } }
+        { image_base64: compressedBase64 }
       );
 
       if (abortRef.current) return;
-      if (fnError) throw new Error(fnError.message);
-      if (data?.error) throw new Error(data.error);
 
-      setResult(data as DesignExtractionResult);
+      setResult(data);
     } catch (err: unknown) {
       if (!abortRef.current) {
-        const message = err instanceof Error ? err.message : "分析失败，请重试";
+        const message = err instanceof Error ? err.message : "Analysis failed, please try again";
         setError(message);
       }
     } finally {

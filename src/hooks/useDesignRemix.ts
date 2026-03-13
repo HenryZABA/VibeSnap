@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { compressImageToBase64 } from "@/lib/utils";
+import { invokeEdgeFunction } from "@/lib/edgeFunction";
 
 export interface RemixResult {
   source_theme: string;
@@ -54,17 +54,15 @@ export function useDesignRemix() {
 
       if (abortRef.current) return;
 
-      // Call remix edge function
-      const { data, error: fnError } = await supabase.functions.invoke(
+      // Call remix edge function via direct fetch
+      const data = await invokeEdgeFunction<RemixResult>(
         "remix-design",
-        { body: { source_base64: sourceBase64, reference_base64: referenceBase64 } }
+        { source_base64: sourceBase64, reference_base64: referenceBase64 }
       );
 
       if (abortRef.current) return;
-      if (fnError) throw new Error(fnError.message);
-      if (data?.error) throw new Error(data.error);
 
-      setResult(data as RemixResult);
+      setResult(data);
     } catch (err: unknown) {
       if (!abortRef.current) {
         const message = err instanceof Error ? err.message : "Analysis failed, please try again";
