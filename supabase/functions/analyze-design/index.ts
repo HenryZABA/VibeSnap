@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const corsHeaders = {
@@ -20,80 +19,70 @@ serve(async (req) => {
     const { image_base64 } = await req.json();
 
     if (!image_base64) {
-      return new Response(
-        JSON.stringify({ error: "image_base64 is required" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ error: "image_base64 is required" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
-    const systemPrompt = `You are a professional UI/UX design analyst. Analyze the provided webpage screenshot and extract its design DNA.
+    const systemPrompt = `You are a world-class UI/UX design analyst. Your task is to analyze a website screenshot and extract its complete design DNA.
 
-CRITICAL REBRANDING RULE for site_theme:
-- You MUST completely rebrand the website theme. Do NOT use any brand names, product names, company names, domain names, or any identifiable terms from the original screenshot.
-- Replace all specific references with generic, category-level descriptions. For example: instead of "Spotify" say "a music streaming platform", instead of "Airbnb" say "a short-term rental marketplace", instead of "Nike" say "a sportswear brand".
-- The site_theme should read as if describing a brand-new, unnamed product in the same category.
-- This rebranding rule also applies to the prompt.text field - never mention the original brand/product name anywhere.
+CRITICAL REBRANDING RULE: The output prompt's site_theme MUST be "rebranded". Do NOT use the original website's brand name, company name, product name, or any identifiable brand references. Instead, describe the site's purpose, target audience, and core functionality in generic, universal terms. For example, instead of "Spotify music streaming app", write "A music streaming platform for discovering and listening to songs, podcasts, and playlists. Target audience: music lovers and podcast enthusiasts."
 
-Return strict JSON format (no markdown code blocks, output raw JSON), with the following fields:
-
+You must return a JSON object with the following structure:
 {
-  "title": "A short creative name for this design (2-6 words, reflecting the core style, e.g. 'Minimal Forest', 'Neon Cityscape', 'Warm Bakery')",
+  "title": "A creative name for this design style",
   "summary": {
-    "style_text": "A 200-300 word design style summary covering overall visual style, color scheme, layout characteristics, and design philosophy",
-    "tags": ["tag1", "tag2", "tag3", "tag4"]
+    "style_text": "A detailed paragraph describing the overall visual style, mood, and design philosophy",
+    "tags": ["tag1", "tag2", "tag3", "tag4", "tag5", "tag6"]
   },
   "palette": [
     {
-      "name": "Color name (e.g. Primary Blue)",
-      "hex": "#hex_value",
-      "usage": ["usage1", "usage2"],
-      "description": "Brief description of the color's role"
+      "name": "Color Name",
+      "hex": "#HEXCODE",
+      "usage": ["primary-bg", "text", "accent", etc],
+      "description": "How this color is used in the design"
     }
   ],
   "typography": {
     "fonts": [
       {
-        "name": "Font English name",
-        "display_name": "Font display name",
-        "css": "CSS font-family value"
+        "name": "Font Name or closest match",
+        "display_name": "Display Name",
+        "css": "CSS font-family string"
       }
     ],
-    "scale_hint": "Font scale hierarchy description"
+    "scale_hint": "Description of the type scale used"
   },
   "tokens": {
-    "radius": {
-      "base": "Base border-radius value",
-      "pill": "Pill-shaped border-radius value"
-    },
-    "shadow": {
-      "base": "Base shadow CSS value",
-      "hover": "Hover shadow CSS value"
-    },
-    "border": {
-      "style": "Border style description"
-    },
-    "spacing": {
-      "grid": "Grid gap value",
-      "layout": "Layout spacing description"
-    }
+    "radius": { "base": "value", "pill": "value" },
+    "shadow": { "base": "value", "hover": "value" },
+    "border": { "style": "value" },
+    "spacing": { "grid": "value", "layout": "value" }
   },
   "prompt": {
-    "site_theme": "A 100-200 word REBRANDED description of the website's theme and purpose. Describe WHAT TYPE of website this is, WHO the target users are, and WHAT core features it offers - but NEVER mention the original brand name, product name, or any identifying terms. Write as if briefing a designer to build a new product in the same category from scratch.",
-    "text": "A complete design prompt (800-1500 words) that can be directly used by AI to generate a page with the same style. The prompt must contain these parts: [Part 1: Site Theme & Purpose] Describe the type of website, industry/scenario, target user group, and core feature modules - all in REBRANDED generic terms, never referencing the original brand. [Part 2: UI Design Style] Page type, overall visual style, color scheme (with specific HEX values), font suggestions, visual tokens like radius/shadow/spacing (with specific CSS values), layout structure, component styles, and animation suggestions. [Part 3: Image & Visual Asset Requirements] Carefully examine the screenshot for any background images, hero banners, decorative illustrations, product photos, icons, or other visual assets used in the design. For each image area identified, describe: its position and dimensions, the content/subject of the image, the visual style (photographic, illustrative, abstract, gradient, etc.), mood and color tone, and provide a detailed AI image generation prompt that can be used to recreate a similar image. If the page uses full-bleed background images, gradient overlays on photos, or decorative elements, specify those clearly so AI can generate appropriate replacement assets. [Part 4: No Empty Spaces - Mandatory Asset Generation] The generated page must NOT have any blank white backgrounds, empty image placeholders, or missing visual elements. For every area where the original design uses an image, photo, illustration, logo, icon, or decorative graphic, you MUST provide a specific AI image generation prompt. This includes: a site logo/brand mark (describe the style, shape, colors, and mood - e.g. 'A minimal geometric logo mark using two overlapping circles in deep blue and coral, conveying connection and creativity'), hero/banner images, background textures or patterns, product/content thumbnails, decorative illustrations or icons, avatar placeholders, and any other visual asset. If the original uses a gradient or colored background instead of an image, specify the exact CSS gradient. The goal is that an AI building this page can generate ALL visual assets from these prompts, resulting in a fully polished page with zero empty spaces. Combine all parts so AI can not only replicate the visual style but also understand the business positioning, content direction, and generate all necessary visual assets. Use backticks to mark key CSS values and technical parameters.",
+    "site_theme": "A rebranded description of what this website does, its purpose, target audience, and core features. NO original brand names.",
+    "text": "A comprehensive, detailed prompt that can be used to recreate this design style. Include specific colors, typography, spacing, and component styles.",
     "version": "v2"
   }
 }
 
-Notes:
-1. Title should be short and creative, reflecting the core style
-2. Palette array should contain 6-8 main colors identified from the screenshot
-3. Each color must have an accurate HEX value
-4. Tags should be 4-6 short design style tags
-5. prompt.text should be detailed enough for AI to generate a page with the same style
-6. CRITICAL: The output prompt MUST include image generation prompts for EVERY visual element - logos, backgrounds, hero images, thumbnails, decorative graphics. The resulting page should have ZERO empty/blank spaces.
-7. CRITICAL: Never use the original brand name, company name, or product name anywhere in the output. Always use generic category descriptions instead.
-8. Return JSON directly, do not wrap in markdown code blocks
-9. All output must be in English`;
+[Part 3: Image & Visual Asset Requirements]
+In the output prompt text, you MUST include a dedicated section about image and visual asset generation. Analyze the screenshot for:
+1. Hero images or background visuals
+2. Decorative illustrations or graphics
+3. Product images or photography styles
+4. Icon styles and illustration approaches
+Then include specific instructions in the prompt about generating these visual assets to avoid blank/empty spaces in the recreated design.
+
+[Part 4: No Empty Spaces - Mandatory Asset Generation]
+The output prompt MUST instruct that every section requiring an image, logo, illustration, or decorative graphic must have a specific generation prompt. The recreated design should NEVER have empty image placeholders or blank background areas. If the original has images, the prompt must describe what kind of images to generate as replacements.
+
+Extract 5-8 main colors from the design. Be specific about hex values.
+Identify the font families used or suggest the closest match.
+Extract design tokens like border-radius, shadows, spacing patterns.
+The prompt should be detailed enough that another designer could recreate the style.
+ALL output must be in English.`;
 
     const response = await fetch("https://api.enter.pro/code/api/v1/ai/messages", {
       method: "POST",
@@ -102,78 +91,70 @@ Notes:
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-3-pro-preview",
+        model: "google/gemini-3.1-pro-preview",
+        max_tokens: 4096,
         messages: [
           {
             role: "user",
             content: [
               {
                 type: "text",
-                text: systemPrompt
+                text: systemPrompt,
               },
               {
                 type: "image",
                 source: {
                   type: "base64",
                   media_type: "image/jpeg",
-                  data: image_base64
-                }
-              }
-            ]
-          }
+                  data: image_base64,
+                },
+              },
+            ],
+          },
         ],
-        max_tokens: 4096,
-        stream: false,
       }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("AI API error:", response.status, errorText);
-      return new Response(
-        JSON.stringify({ error: `AI service error: ${response.status}` }),
-        { status: response.status, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      console.error(`AI API error: ${response.status} ${errorText}`);
+      return new Response(JSON.stringify({ error: `AI service error: ${response.status}` }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     const aiResponse = await response.json();
-    console.log("AI response received:", JSON.stringify(aiResponse).substring(0, 200));
-
-    let textContent = "";
-    if (aiResponse.content && Array.isArray(aiResponse.content)) {
+    
+    let resultText = "";
+    if (aiResponse.content && aiResponse.content.length > 0) {
       for (const block of aiResponse.content) {
         if (block.type === "text") {
-          textContent += block.text;
+          resultText += block.text;
         }
       }
     }
 
-    let result;
+    let parsedResult;
     try {
-      result = JSON.parse(textContent);
+      parsedResult = JSON.parse(resultText);
     } catch {
-      const jsonMatch = textContent.match(/```(?:json)?\s*([\s\S]*?)```/);
+      const jsonMatch = resultText.match(/```(?:json)?\s*([\s\S]*?)```/);
       if (jsonMatch) {
-        result = JSON.parse(jsonMatch[1].trim());
+        parsedResult = JSON.parse(jsonMatch[1].trim());
       } else {
-        const objectMatch = textContent.match(/\{[\s\S]*\}/);
-        if (objectMatch) {
-          result = JSON.parse(objectMatch[0]);
-        } else {
-          throw new Error("Could not parse AI response as JSON");
-        }
+        throw new Error("Failed to parse AI response as JSON");
       }
     }
 
-    return new Response(
-      JSON.stringify(result),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify(parsedResult), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   } catch (error) {
-    console.error("Edge function error:", error);
-    return new Response(
-      JSON.stringify({ error: error.message || "Internal server error" }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    console.error("Error in analyze-design:", error);
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });

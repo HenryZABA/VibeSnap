@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const corsHeaders = {
@@ -20,43 +19,40 @@ serve(async (req) => {
     const { source_base64, reference_base64 } = await req.json();
 
     if (!source_base64 || !reference_base64) {
-      return new Response(
-        JSON.stringify({ error: "source_base64 and reference_base64 are both required" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ error: "Both source_base64 and reference_base64 are required" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
-    const systemPrompt = `You are a professional UI/UX design transformation expert. The user will provide two images:
-
-**Image 1 (Source Website)**: The user's current website screenshot - this is the project whose functionality must be FULLY PRESERVED
-**Image 2 (Reference Style)**: The style/design screenshot the user wants to reference - ONLY the visual style from this image should be applied
+    const systemPrompt = `You are a world-class UI/UX design consultant. You are given TWO website screenshots:
+1. IMAGE 1 (Source): The client's current website that needs a visual redesign
+2. IMAGE 2 (Reference): A reference design whose visual style should be applied to the source
 
 CRITICAL RULES:
-1. FUNCTIONALITY PRESERVATION: The modification prompt MUST preserve ALL features, functionality, content sections, navigation structure, interactive elements, and business logic visible in the source website (Image 1). List every feature module you can identify and explicitly state they must remain unchanged.
-2. STYLE-ONLY TRANSFER: Only the visual appearance (colors, fonts, spacing, shadows, borders, component styling, etc.) from the reference (Image 2) should be applied. Never suggest adding, removing, or changing any functional element from the source.
-3. FEATURE INVENTORY: In source_theme, provide a detailed inventory of every feature/section visible in the source website so nothing gets lost during the transformation.
+- FUNCTIONALITY PRESERVATION MANDATE: You MUST preserve 100% of the source website's functionality. Every feature, button, form, navigation item, content section, and interactive element from the source MUST appear in the output prompt. Do NOT remove, hide, or simplify any functionality.
+- FEATURE INVENTORY: In the source_theme, you must create a detailed inventory of ALL features and content sections found in the source website. List every navigation item, every button, every form field, every content card, every section heading, etc.
+- STYLE-ONLY TRANSFER: Only the visual style (colors, typography, spacing, shadows, borders, layout patterns, imagery style) from the reference should be applied. The source's complete feature set and content structure must remain intact.
 
-Please complete the following analysis tasks:
-1. From Image 1 (Source Website): Extract a comprehensive feature inventory - every page section, navigation item, interactive element, form, button, content area, and functional module visible. Also identify the website theme, business positioning, and target users.
-2. From Image 2 (Reference Style): Extract ONLY the visual style - color scheme, font style, design tokens like radius/shadow/spacing, layout patterns, component styling, and any background images or decorative visual assets used.
-3. Generate a complete "UI Modification Prompt" that applies the reference visual style to the source website while preserving 100% of its functionality.
+Your task:
+1. Analyze the SOURCE website's theme (what it does, its purpose, target audience) and create a complete feature inventory
+2. Analyze the REFERENCE website's visual style (colors, typography, layout, design patterns)
+3. Generate a comprehensive modification prompt that applies the reference's visual style to the source while preserving ALL source functionality
 
-Return strict JSON format (no markdown code blocks, output raw JSON), with the following fields:
-
+Return a JSON object:
 {
-  "source_theme": "200-300 words. Start with a brief description of what the source website does and who it serves. Then provide a DETAILED FEATURE INVENTORY listing every visible section, component, and interactive element (e.g., 'Header with logo, search bar, and user menu; Hero section with headline, subtitle, and CTA button; Product grid with filter sidebar; Footer with 4-column links'). This inventory ensures nothing is lost during transformation.",
-  "reference_style": "100-200 words describing the reference style's visual characteristics: color palette, typography style, spacing philosophy, component aesthetics, layout approach, and any notable use of background images or decorative visual assets",
-  "modification_prompt": "A 1000-2000 word complete modification prompt. This prompt should be directly usable by AI to transform the source website's UI to match the reference style. The prompt MUST include: [Feature Preservation Mandate] Explicitly list ALL features and sections from the source website that must remain unchanged - every navigation item, content section, interactive element, form field, and functional component. State clearly: 'Do NOT add, remove, or modify any functionality. Only change the visual appearance.' [Visual Style Transformation] Detailed description of the new visual style to apply, including: overall design language and atmosphere, color scheme (with specific HEX values), font suggestions, visual tokens like radius/shadow/border (with specific CSS values), spacing and layout adjustment suggestions (layout changes are OK as long as all content/features remain), component style transformation for each component type identified in the source (buttons, cards, navbar, forms, tables, etc.), and animation/interaction suggestions. [Image & Visual Asset Generation] Analyze the reference style for any background images, hero banners, decorative illustrations, gradient overlays, or visual embellishments. For each visual asset needed to achieve the reference style, provide a detailed AI image generation prompt describing: the subject/content, visual style (photographic, illustrative, abstract, etc.), color palette and mood, dimensions and placement. [No Empty Spaces - Mandatory Asset Generation] The transformed page must NOT have any blank white backgrounds, empty image placeholders, or missing visual elements. You MUST provide AI image generation prompts for: a site logo/brand mark that fits the new style (describe shape, colors, style - e.g. 'A modern minimalist logo using geometric shapes in the new primary color palette'), any hero/banner background images, background textures or gradient patterns, content thumbnails or product images, decorative illustrations or icon sets, avatar placeholders, and any other visual element that would otherwise be empty. If the reference uses colored/gradient backgrounds instead of images, specify exact CSS gradients. The goal is a fully polished transformation with ZERO empty visual spaces. Use backticks to mark key CSS values and technical parameters."
+  "source_theme": "Detailed description of what the source website does, its purpose, target audience, AND a complete feature inventory listing every UI element, navigation item, content section, button, form, and interactive element found in the source.",
+  "reference_style": "Detailed description of the reference design's visual characteristics",
+  "modification_prompt": "A comprehensive, actionable prompt to redesign the source website using the reference's visual style. Must explicitly state that ALL original features and functionality must be preserved. Include specific colors, typography, spacing, component styles, and image/visual asset generation instructions."
 }
 
-Notes:
-1. source_theme MUST include a comprehensive feature inventory - this is critical to prevent feature loss
-2. reference_style should focus purely on visual characteristics, not functionality
-3. modification_prompt must start with an explicit feature preservation mandate before any style instructions
-4. CRITICAL: The prompt MUST include image/logo generation instructions for every visual area. No blank backgrounds, no empty placeholders, no missing logos.
-5. The prompt should make it impossible for an AI following it to accidentally remove or change any source website functionality
-6. Return JSON directly, do not wrap in markdown code blocks
-7. All output must be in English`;
+[Part 3: Image & Visual Asset Requirements]
+In the modification_prompt, include a dedicated section about generating images, logos, illustrations, and decorative graphics. The redesigned website must NOT have any empty image placeholders or blank background areas. Every space that needs a visual must have a specific image generation prompt describing what to create.
+
+[Part 4: No Empty Spaces - Mandatory Asset Generation]
+The modification_prompt MUST instruct that every section requiring an image, logo, illustration, icon, or decorative graphic must have a specific generation prompt. The redesigned website should NEVER have empty image placeholders, blank backgrounds, or missing visual elements. Include prompts for generating hero images, section backgrounds, icons, logos, and any decorative elements needed.
+
+ALL output must be in English.`;
 
     const response = await fetch("https://api.enter.pro/code/api/v1/ai/messages", {
       method: "POST",
@@ -65,86 +61,78 @@ Notes:
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-3-pro-preview",
+        model: "google/gemini-3.1-pro-preview",
+        max_tokens: 4096,
         messages: [
           {
             role: "user",
             content: [
               {
                 type: "text",
-                text: systemPrompt
+                text: systemPrompt,
               },
               {
                 type: "image",
                 source: {
                   type: "base64",
                   media_type: "image/jpeg",
-                  data: source_base64
-                }
+                  data: source_base64,
+                },
               },
               {
                 type: "image",
                 source: {
                   type: "base64",
                   media_type: "image/jpeg",
-                  data: reference_base64
-                }
-              }
-            ]
-          }
+                  data: reference_base64,
+                },
+              },
+            ],
+          },
         ],
-        max_tokens: 8192,
-        stream: false,
       }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("AI API error:", response.status, errorText);
-      return new Response(
-        JSON.stringify({ error: `AI service error: ${response.status}` }),
-        { status: response.status, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      console.error(`AI API error: ${response.status} ${errorText}`);
+      return new Response(JSON.stringify({ error: `AI service error: ${response.status}` }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     const aiResponse = await response.json();
-    console.log("AI response received:", JSON.stringify(aiResponse).substring(0, 200));
 
-    let textContent = "";
-    if (aiResponse.content && Array.isArray(aiResponse.content)) {
+    let resultText = "";
+    if (aiResponse.content && aiResponse.content.length > 0) {
       for (const block of aiResponse.content) {
         if (block.type === "text") {
-          textContent += block.text;
+          resultText += block.text;
         }
       }
     }
 
-    let result;
+    let parsedResult;
     try {
-      result = JSON.parse(textContent);
+      parsedResult = JSON.parse(resultText);
     } catch {
-      const jsonMatch = textContent.match(/```(?:json)?\s*([\s\S]*?)```/);
+      const jsonMatch = resultText.match(/```(?:json)?\s*([\s\S]*?)```/);
       if (jsonMatch) {
-        result = JSON.parse(jsonMatch[1].trim());
+        parsedResult = JSON.parse(jsonMatch[1].trim());
       } else {
-        const objectMatch = textContent.match(/\{[\s\S]*\}/);
-        if (objectMatch) {
-          result = JSON.parse(objectMatch[0]);
-        } else {
-          throw new Error("Could not parse AI response as JSON");
-        }
+        throw new Error("Failed to parse AI response as JSON");
       }
     }
 
-    return new Response(
-      JSON.stringify(result),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify(parsedResult), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   } catch (error) {
-    console.error("Edge function error:", error);
-    return new Response(
-      JSON.stringify({ error: error.message || "Internal server error" }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    console.error("Error in remix-design:", error);
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });
